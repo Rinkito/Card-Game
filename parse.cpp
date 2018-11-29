@@ -70,17 +70,19 @@ int main() {
   char suits[size_deck];
   int numbers[size_deck];
 
-  //initialize queue
+  //initialize deck
   node * first_deck = new node; //constantly holds the first node of the deck
   node * head_deck = first_deck; //is the head of the deck
   node * tail_deck = first_deck; //is used for the next availible spot to put nodes
   int counter_deck = 0; //counter for queue to see how many elements are in the queue
-
-  node * first_hand = new node; //constantly holds the first node of the deck
-  node * head_hand = first_hand; //is the head of the deck
-  node * tail_hand = first_hand; //is used for the next availible spot to put nodes
-  int counter_hand = 0; //counter for queue to see how many elements are in the queue
-  
   parse(tail_deck, first_deck, counter_deck, size_deck); //fills up the deck
+
+  //initialize hand
+  node * first_hand = new node; 
+  node * head_hand = first_hand;
+  node * tail_hand = first_hand; 
+  int counter_hand = 0; 
+  
+  
   print(head_deck, tail_deck, size_deck);
 }
