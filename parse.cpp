@@ -16,9 +16,8 @@ bool isEmpty(int counter) {
   return false;
 }
 
-
 //push function
-void push(node* &tail, node* &first, int &counter, int size, char input, int value) {
+void push_deck(node* &tail, node* &first, int &counter, int size, char input, int value) {
   if(counter == size) { //if the queue reaches the max size
     counter == 0; //reset the counter
     tail->suit = input;
@@ -33,34 +32,9 @@ void push(node* &tail, node* &first, int &counter, int size, char input, int val
     tail = tail->next;
     counter++;
   }
-} 
-
-void push_hand(node* &tail, node* &first, int &counter, char input, int value)
-{
-	if(counter == 5) // hand only holds max 5 cards
-	{
-		cout << "Hand is full!" << endl;
-	}
-	node* temp = new node; 
-    temp->suit = input; 
-    temp->number = value;
-    temp->next = NULL; 
-    
-    if (first_h == NULL) 
-    {
-        first_h = tail = temp;
-        tail->next = NULL;
-        counter++;
-    }
-    else //otherwise, we push in from tail
-    {
-        tail->next = temp;
-        tail = temp;
-        counter++;
-    }
 }
 
-void push_sort(node* &tail, node* &first, int &counter, char input, int value)
+void push(node* &tail, node* &first, int &counter, char input, int value)
 {
 	node* temp = new node; 
     temp->suit = input; 
@@ -94,7 +68,7 @@ void parse(node * tail_deck, node * first_deck, int counter_deck, int size_deck,
     for(int i=0;i<size_deck;i++) { //reads the file line by line and fills up the array with the data
       in >> s;
       in >> n;
-      push(tail_deck, first_deck, counter_deck, size_deck, values, numbers); //uses push to fill up the deck
+      push_deck(tail_deck, first_deck, counter_deck, size_deck, values, numbers); //uses push to fill up the deck
     }
   }
 }
@@ -145,7 +119,7 @@ int main() {
 	cout << "Drawing..." << endl;
 	for (int i = 0; i < 5; i++) //first time starting - draw 5 cards into hand as queue
 	{
-		push_hand(tail_hand,head_hand,counter_hand,/*pop [node]->suit?, pop [node]->number?*/)
+		push(tail_hand,head_hand,counter_hand,tail_hand->suit,tail_hand->number);
 	}
   
   cout << "Enter 1, 2, 3 to place onto the respective sorting stacks ";
@@ -172,7 +146,7 @@ int main() {
 				//return; redo push
 			}
 			iA++;
-			push_sort(tailA,headA,counter_sort,tail_hand->suit, tail_hand->number);
+			push(tailA,headA,counter_sort,tail_hand->suit, tail_hand->number);
 			//pop
 		}
 		else if (choice == 2)
@@ -193,7 +167,7 @@ int main() {
 				//return; redo push
 			}
 			iB++;
-			push_sort(tailB,headB,counter_sort,tail_hand->suit, tail_hand->number);
+			push(tailB,headB,counter_sort,tail_hand->suit, tail_hand->number);
 			//pop
 		}
 		else if (choice == 3)
@@ -214,12 +188,12 @@ int main() {
 				//return; redo push
 			}
 			iC++;
-			push_sort(tailC,headC,counter_sort,tail_hand->suit,tail_hand->number);
+			push(tailC,headC,counter_sort,tail_hand->suit,tail_hand->number);
 			//pop
 		}
 		else if (choice == 4)
 		{
-			push(tail_deck, first_deck, counter_deck, size_deck,tail_hand->suit, tail_hand->number); // suit and number comes from hand on all of these
+			push_deck(tail_hand, head_hand, counter_deck, size_deck,tail_hand->suit, tail_hand->number); // suit and number comes from hand on all of these
 			//pop hand that was sent to deck
 			//push from deck back into hand
 		}
