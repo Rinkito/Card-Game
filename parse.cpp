@@ -40,9 +40,9 @@ void push(node* &tail, node* &first, int &counter, char input, int value)
     temp->suit = input; 
     temp->number = value;
     temp->next = NULL; 
-    if (first_h == NULL) 
+    if (first == NULL) 
     {
-        first_h = tail = temp;
+        first = tail = temp;
         tail->next = NULL;
         counter++;
     }
@@ -54,9 +54,15 @@ void push(node* &tail, node* &first, int &counter, char input, int value)
     }
 }
 
+void pop(node* &tail, node* &first, int &counter, char input, int value) {
+	
+}
+
 //opens file and fills up the deck
-void parse(node * tail_deck, node * first_deck, int counter_deck, int size_deck, char values, int numbers) { 
-  std::ifstream in; 
+void parse(node array[], deck_counter) { 
+  std::ifstream in;
+  char s; //placeholders for values
+  int n; 
   in.open("deck2"); //opens the file
   std::string garbageline; //holds the first line so it can be ignored
   if(in.fail()) {
@@ -68,7 +74,7 @@ void parse(node * tail_deck, node * first_deck, int counter_deck, int size_deck,
     for(int i=0;i<size_deck;i++) { //reads the file line by line and fills up the array with the data
       in >> s;
       in >> n;
-      push_deck(tail_deck, first_deck, counter_deck, size_deck, values, numbers); //uses push to fill up the deck
+      push_deck(tail_deck, first_deck, counter_deck, size_deck, s, n); //uses push to fill up the deck
     }
   }
 }
@@ -86,25 +92,22 @@ int main() {
   int choice;
   int size_deck = 30; 
   int size_hand = 5;
-  //char suits[size_deck];
-  //int numbers[size_deck];
   int turn = 1; // number of turns passed
-  char s; //placeholders for values
-  int n;
   //initialize deck
   node * first_deck = new node; //constantly holds the first node of the deck
   node * head_deck = first_deck; //is the head of the deck
   node * tail_deck = first_deck; //is used for the next availible spot to put nodes
   int counter_deck = 0; //counter for queue to see how many elements are in the queue
-  parse(tail_deck, first_deck, counter_deck, size_deck, s, n); //fills up the deck
+  parse(tail_deck, first_deck, counter_deck, size_deck); //fills up the deck
 
   //initialize hand
-  //node * first_hand = new node; //already have new node as temp in function
+  node * first_hand = new node; //already have new node as temp in function
   node * head_hand = first_hand;
   node * tail_hand = first_hand; 
   int counter_hand = 0; 
   
   //3 sorting stack nodes initialize
+	node* head = new node;
 	node* headA = NULL;
 	node* tailA = head;
 	
@@ -116,33 +119,33 @@ int main() {
 	int counter_sort = 0;
 	int iA,iB,iC; //suit A,B,C counters for sort full
 	 
-	cout << "Drawing..." << endl;
+	std::cout << "Drawing..." << std::endl;
 	for (int i = 0; i < 5; i++) //first time starting - draw 5 cards into hand as queue
 	{
 		push(tail_hand,head_hand,counter_hand,tail_hand->suit,tail_hand->number);
 	}
   
-  cout << "Enter 1, 2, 3 to place onto the respective sorting stacks ";
-  cout << "or 4 to place first card in hand back into bottom of deck." << endl;
-  
-	while(bool game_end == false)
+  std::cout << "Enter 1, 2, 3 to place onto the respective sorting stacks ";
+  std::cout << "or 4 to place first card in hand back into bottom of deck." << std::endl;
+  bool game_end = false;
+	while(game_end == false)
 	{
-		cout << "TURN " << turn << endl;
+		std::cout << "TURN " << turn << std::endl;
 		if(choice == 1)
 		{  
 			if(iA == 10) // 10 values per suit
 			{
-				cout << "Stack A is full!" << endl;
+				std::cout << "Stack A is full!" << std::endl;
 				//return; redo the push
 			}
 			else if(tail_hand->suit == 'B' || tail_hand->suit == 'C')
 			{
-				cout << "Wrong card type" << endl;
+				std::cout << "Wrong card type" << std::endl;
 				//return; redo the push
 			}
 			else if(tail_hand->number != (tailA->number)+1)
 			{
-				cout << "Not sorted correctly!" << endl;
+				std::cout << "Not sorted correctly!" << std::endl;
 				//return; redo push
 			}
 			iA++;
@@ -153,17 +156,17 @@ int main() {
 		{
 			if(iB == 10) // 10 values per suit
 			{
-				cout << "Stack B is full!" << endl;
+				std::cout << "Stack B is full!" << std::endl;
 				//return; redo the push
 			}
 			else if(tail_hand->suit == 'A' || tail_hand->suit == 'C')
 			{
-				cout << "Wrong card type" << endl;
+				std::cout << "Wrong card type" << std::endl;
 				//return; redo the push
 			}
 			else if(tail_hand->number != (tailB->number)+1)
 			{
-				cout << "Not sorted correctly!" << endl;
+				std::cout << "Not sorted correctly!" << std::endl;
 				//return; redo push
 			}
 			iB++;
@@ -174,17 +177,17 @@ int main() {
 		{
 			if(iC == 10) //10 values per suit
 			{
-				cout << "Stack A is full!" << endl;
+				std::cout << "Stack A is full!" << std::endl;
 				//return; redo the push
 			}
 			else if(tail_hand->suit == 'B' || tail_hand->suit == 'A')
 			{
-				cout << "Wrong card type" << endl;
+				std::cout << "Wrong card type" << std::endl;
 				//return; redo the push
 			}
 			else if(tail_hand->number != (tailC->number)+1)
 			{
-				cout << "Not sorted correctly!" << endl;
+				std::cout << "Not sorted correctly!" << std::endl;
 				//return; redo push
 			}
 			iC++;
@@ -199,8 +202,9 @@ int main() {
 		}
 		
 		turn++;
-		
-		game_end == true; //end game	
+		if(turn = 100)
+		{
+		game_end = true; }//end game	
 	}
   
   print(head_deck, tail_deck, size_deck);
