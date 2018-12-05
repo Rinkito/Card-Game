@@ -38,18 +38,18 @@ void push(node* &tail, node* &first, int &counter, char input, int value)
     node* temp = new node; 
     temp->suit = input; 
     temp->number = value;
-    temp->next = NULL; 
+    temp->next = new node; 
     if (first == NULL) 
     {
         first = tail = temp;
-        tail->next = NULL;
+        tail->next = new node;
         counter++;
     }
     else //otherwise, we push in from tail
     {
-        tail->next = temp;
-        tail = temp;
-        counter++;
+    //tail->next = temp;
+    tail = temp;
+    counter++;
     }
 }
 
@@ -57,6 +57,15 @@ node pop_deck(node array[], int & head) {
   node temp = array[head];
   head++;
   return temp; //return the node that was the head
+}
+
+void pop_hand(node * n, node* first, int counter, int size) {
+  if(counter == size) {
+    n = first;
+  }
+  else {
+    n = n->next;
+  }
 }
 
 //opens file and fills up the deck
@@ -93,6 +102,18 @@ void print(node deck[], int counter, int size) {
   }
 }
 
+//print for hands or anything using linked lists
+void print(node * head, int size, node * first) { 
+  for(int i=0;i<size;i++) { 
+    if(head == NULL) {
+      head = first;
+    }
+    std::cout << head->suit << " " << head->number;
+    std::cout << std::endl;
+    head = head->next;
+  }
+}
+
 int main() {
   int choice;
   int size_deck = 30; 
@@ -101,14 +122,14 @@ int main() {
   
   //initializes decks
   node deck[size_deck]; //ring buffer array for deck 
-  int counter_deck = 0; //effective head pointer for the deck
+  int head_deck = 0; //effective head pointer for the deck
   int tail_deck = 0; //next availible place to put values in the deck
   parse(deck, tail_deck); //fills up the deck
   
   //initialize hand
   node * first_hand = new node; //already have new node as temp in function
-  node * head_hand = first_hand;
-  node * tail_hand = first_hand; 
+  node * head_hand = first_hand; //head of the queue used to pop values
+  node * tail_hand = first_hand; //tail of the queue used to store values
   int counter_hand = 0; 
   
   //3 sorting stack nodes initialize
@@ -123,17 +144,15 @@ int main() {
 	node* tailC = head;
 	int counter_sort = 0;
 	int iA,iB,iC; //suit A,B,C counters for sort full
-	 
+	
 	std::cout << "Drawing..." << std::endl;
 	for (int i = 0; i < 5; i++) //first time starting - draw 5 cards into hand as queue
 	{
-		push(tail_hand,head_hand,counter_hand,tail_hand->suit,tail_hand->number);
-	}
-  
-  pop_deck(deck, counter_deck); 
-  print(deck, counter_deck, size_deck);
-  
-
+		push(tail_hand,head_hand,counter_hand,deck[head_deck].suit, deck[head_deck].number); 
+                pop_deck(deck, head_deck); //makes sure that the card is removed from the deck
+	}    
+  //print(head_hand, size_hand, first_hand);  
+  std::cout << head_hand->suit << " " << head_hand->number << std::endl;      
 
 
   //print(deck, counter_deck);
