@@ -17,19 +17,17 @@ bool isEmpty(int counter) {
 }
 
 //push function
-void push_deck(node* &tail, node* &first, int &counter, int size, char input, int value) {
-  if(counter == size) { //if the queue reaches the max size
+void push_deck(node array[], int & counter, char input, int value) {
+  if(counter == 30) { //if the queue reaches the max size
     counter == 0; //reset the counter
-    tail->suit = input;
-    tail->number = value;
-    tail->next = first; //set the next pointer back to the beginning of the queue
-    tail = tail->next;
+    array[counter].suit = input;
+    array[counter].number = value;
+    array[counter].next = NULL; //set the next pointer back to the beginning of the queue
   }
   else {
-    tail->suit = input;
-    tail->number = value;
-    tail->next = new node;
-    tail = tail->next;
+    array[counter].suit = input;
+    array[counter].number = value;
+    array[counter].next = new node;
     counter++;
   }
 }
@@ -54,12 +52,8 @@ void push(node* &tail, node* &first, int &counter, char input, int value)
     }
 }
 
-void pop(node* &tail, node* &first, int &counter, char input, int value) {
-	
-}
-
 //opens file and fills up the deck
-void parse(node array[], deck_counter) { 
+void parse(node array[], int & deck_counter) { 
   std::ifstream in;
   char s; //placeholders for values
   int n; 
@@ -71,20 +65,20 @@ void parse(node array[], deck_counter) {
   }
   else {
     std::getline(in, garbageline); //ignores the first line
-    for(int i=0;i<size_deck;i++) { //reads the file line by line and fills up the array with the data
+    for(int i=0;i<30;i++) { //reads the file line by line and fills up the array with the data
       in >> s;
       in >> n;
-      push_deck(tail_deck, first_deck, counter_deck, size_deck, s, n); //uses push to fill up the deck
+      push_deck(array, deck_counter, s, n); //uses push to fill up the deck
     }
   }
 }
 
 //prints out the array 
-void print(node * head, node * tail, int counter) {
+void print(node deck[], int counter) {
   for(int i=0;i<counter;i++) { 
-    std::cout << head->suit << " " << head->number;
+    std::cout << deck[i].suit << " " << deck[i].number;
     std::cout << std::endl;
-    head = head->next;
+    //head = head->next;
   }
 }
 
@@ -92,13 +86,19 @@ int main() {
   int choice;
   int size_deck = 30; 
   int size_hand = 5;
-  int turn = 1; // number of turns passed
-  //initialize deck
+  int turn = 1; // number of turns 
+  
+  node deck[size_deck]; //ring buffer array for deck
+  
+  /*initialize deck
   node * first_deck = new node; //constantly holds the first node of the deck
   node * head_deck = first_deck; //is the head of the deck
   node * tail_deck = first_deck; //is used for the next availible spot to put nodes
+  */
+  
   int counter_deck = 0; //counter for queue to see how many elements are in the queue
-  parse(tail_deck, first_deck, counter_deck, size_deck); //fills up the deck
+  parse(deck, counter_deck); //fills up the deck
+  //std::cout << counter_deck << std::endl;
 
   //initialize hand
   node * first_hand = new node; //already have new node as temp in function
@@ -196,7 +196,7 @@ int main() {
 		}
 		else if (choice == 4)
 		{
-			push_deck(tail_hand, head_hand, counter_deck, size_deck,tail_hand->suit, tail_hand->number); // suit and number comes from hand on all of these
+			push_deck(deck, counter_deck, tail_hand->suit, tail_hand->number); // suit and number comes from hand on all of these
 			//pop hand that was sent to deck
 			//push from deck back into hand
 		}
@@ -207,5 +207,5 @@ int main() {
 		game_end = true; }//end game	
 	}
   
-  print(head_deck, tail_deck, size_deck);
+  print(deck, counter_deck);
 }
