@@ -56,12 +56,12 @@ node pop_deck(node array[], int & head) {
   return temp; //return the node that was the head
 }
 
-void pop_hand(node * n, node* first, int counter, int size) {
-  if(counter == size) {
-    n = first;
+void pop_hand(node * &head, node * &first) {
+  if(head->next == NULL) {
+    head = first;
   }
   else {
-    n = n->next;
+    head = head->next;
   }
 }
 
@@ -148,9 +148,8 @@ int main() {
 		push(tail_hand, first_hand, counter_hand, size_hand, deck[head_deck].suit, deck[head_deck].number); 
                 pop_deck(deck, head_deck); //makes sure that the card is removed from the deck
 	}   
-  std::cout << counter_hand << std::endl; 
-  push(tail_hand, first_hand, counter_hand, size_hand, 'A', 4);
-  print(head_hand, size_hand, first_hand);  
+  pop_hand(head_hand, first_hand);
+  print(head_hand, size_hand, first_hand); 
   
   /*
   std::cout << "Enter 1, 2, 3 to place onto the respective sorting stacks ";
