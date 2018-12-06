@@ -137,8 +137,11 @@ void print(node * head, int size, node * first) {
 
 int main() {
   int choice;
-  int size_deck = 30; 
+  int choice2; 
+  int size_deck = 30; //max deck size 
+  int left = 30; //used for the game later to count how many cards are in the deck
   int size_hand = 5;
+  int actions = 5; //amount of cards left in hand basically
   int turn = 1; // number of turns 
   
   //initializes decks
@@ -154,26 +157,40 @@ int main() {
   int counter_hand = 0; 
   
   //3 sorting stack nodes initialize
-	node* head = new node;
+	//node* head = new node;
 	node* headA = NULL;
-	node* tailA = head;
-	
+	node* tailA = new node;
+        node* topA = new node;	
+
 	node* headB = NULL;
-	node* tailB = head;
-	
+	node* tailB = new node;
+        node* topB = new node;	
+
 	node* headC = NULL;
-	node* tailC = head;
+	node* tailC = new node;
+        node* topA = new node;        
+
+        //initialize these for later use
+        tailA->number = 0;
+        tailB->number = 0;
+        tailC->number = 0;
+
 	// 5 sorting stack nodes initialize
 	node* headO1 = NULL;
 	node* tailO1 = head;
+        node* topO1 = head;
 	node* headO2 = NULL;
 	node* tailO2 = head;
+        node* topO2 = new node;
 	node* headO3 = NULL;
 	node* tailO3 = head;
+        node* topO3 = new node;
 	node* headO4 = NULL;
-	node* tailO4 = head;	
+	node* tailO4 = head;
+        node* topO4 = new node;	
 	node* headO5 = NULL;
 	node* tailO5 = head;
+        node* topO5 = new node;
 	int counter_sort = 0;
 	int iA,iB,iC; //suit A,B,C counters for sort full
 	
@@ -183,26 +200,9 @@ int main() {
 		push(tail_hand, first_hand, counter_hand, size_hand, deck[head_deck].suit, deck[head_deck].number); 
                 pop_deck(deck, head_deck); //makes sure that the card is removed from the deck
 	}   
-  pop_hand(head_hand, first_hand);
-  pop_hand(head_hand, first_hand);
-  print(head_hand, size_hand, first_hand); 
-
   
-
-
-
-
-
   //sort algorithm - determines which stack user wants to put card in and will only allow user to put in card numbers
   //1 less than current value at top of respective sorting stacks
-  /*
-  std::cout << "Sorted Stacks: ";
-  std::cout << "| " << tailA->suit << tailA->number << " | " << tailB->suit << tailB->number << " | " << tailC->suit << tailC->number << " | ";
-  std::cout << "                Temporary Stacks: " << tailO1->suit << tailO1->number << " | " << tailO2->suit << tailO2->number << " | " << tailO3->suit << tailO3->number << " | ";
-  std:: cout << tailO4->suit << tailO4->number << " | " << tailO5->suit << tailO5->number << " | " << std::endl;
-  */
-
-
   /*
   int sort_choice;
   std::cin >> sort_choice;
@@ -288,36 +288,48 @@ int main() {
   }
   */
   
-  /*
-  std::cout << "Enter 1, 2, 3 to place onto the respective sorting stacks ";
-  std::cout << "or 4 to place first card in hand back into bottom of deck." << std::endl;
   bool game_end = false;
 	while(game_end == false)
 	{
+                std::cout << "Hand: " << std::endl;
+                print(head_hand, actions, first_hand); //pass actions so prints just the right amount of cards
+                std::cout << "1: To enter your card into sorted pile (final product)" << std::endl;
+                std::cout << "2: To enter your card into a sorting space" << std::endl;
+                std::cout << "3: To place first card in hand back into bottom of deck." << std::endl;
+                std::cout << "4: To quit (but not on the first turn)." << std::endl;
+                std::cin >> choice; //menu options
 		std::cout << "TURN " << turn << std::endl;
-		if(choice == 1)
-		{  
-			if(iA == 10) // 10 values per suit
-			{
-				std::cout << "Stack A is full!" << std::endl;
-				//return; redo the push
-			}
-			else if(tail_hand->suit == 'B' || tail_hand->suit == 'C')
-			{
-				std::cout << "Wrong card type" << std::endl;
-				//return; redo the push
-			}
-			else if(tail_hand->number != (tailA->number)+1)
-			{
-				std::cout << "Not sorted correctly!" << std::endl;
-				//return; redo push
-			}
-			iA++;
-			push(tailA,headA,counter_sort,tail_hand->suit, tail_hand->number);
-			//pop
-		}
-		else if (choice == 2)
-		{
+                switch(choice) {
+		case 1:
+                  while(true) {
+                    std::cout << "Choose either pile 1: A, 2: B, 3: C, or 4 to quit (pick the number that corresponds to suit)." << std::endl;
+                    std::cin >> choice2; 
+                    if(choice2 == 1) {
+                      if(iA == 10) // 10 values per suit
+		      {
+			std::cout << "Stack A is full!" << std::endl;
+			//return; redo the push
+		      }
+		      else if(tail_hand->suit == 'B' || tail_hand->suit == 'C')
+		      {
+			std::cout << "Wrong card type" << std::endl;
+			//return; redo the push
+		      }
+		      else if(tail_hand->number != (tailA->number)+1)
+		      {
+			std::cout << "Not sorted correctly!" << std::endl;
+			//return; redo push
+		      }
+                      else {
+		  	iA++;
+		  	push(tailA,headA,counter_sort, 100, tail_hand->suit, tail_hand->number); //make the stack huge
+                  	pop_hand(head_hand, first_hand);//pop hand
+                        actions--;
+                        break;
+                      }
+                    }
+		    else if (choice2 == 2)
+		    {
 			if(iB == 10) // 10 values per suit
 			{
 				std::cout << "Stack B is full!" << std::endl;
@@ -333,12 +345,16 @@ int main() {
 				std::cout << "Not sorted correctly!" << std::endl;
 				//return; redo push
 			}
-			iB++;
-			push(tailB,headB,counter_sort,tail_hand->suit, tail_hand->number);
-			//pop
-		}
-		else if (choice == 3)
-		{
+                        else{
+			  iB++;
+			  push(tailB,headB,counter_sort, 100, tail_hand->suit, tail_hand->number);
+			  pop_hand(head_hand, first_hand);//pop
+                          actions--;
+                          break;
+                        }
+		    }
+		    else if (choice2 == 3)
+		    {
 			if(iC == 10) //10 values per suit
 			{
 				std::cout << "Stack A is full!" << std::endl;
@@ -354,21 +370,62 @@ int main() {
 				std::cout << "Not sorted correctly!" << std::endl;
 				//return; redo push
 			}
-			iC++;
-			push(tailC,headC,counter_sort,tail_hand->suit,tail_hand->number);
-			//pop
-		}
-		else if (choice == 4)
-		{
-			push_deck(deck, counter_deck, tail_hand->suit, tail_hand->number); // suit and number comes from hand on all of these
-			//pop hand that was sent to deck
-			//push from deck back into hand
-		}
-		
-		turn++;
-		if(turn = 100)
-		{
-		game_end = true; }//end game	
-	}*/
+                        else{ //exception handling
+			  iC++;
+			  push(tailC,headC,counter_sort, 100, tail_hand->suit,tail_hand->number);
+			  pop_hand(head_hand, first_hand);//pop
+                          actions--;
+                          break;
+		        }
+                      }
+                      else if(choice2 == 4) {
+                        break;
+                      }
+                      else{ //exception handling
+                        std::cin.clear(); //clears the stream
+                        std::cin.ignore(); //ignores the rest of the values in the stream
+                        std::cout << "Invalid input, please try again." << std::endl;
+                        choice2 = 0;
+                      }
+                    }
+                    break; 
+                case 2: 
+                	std::cout << "Choose a sorting pile from 1-5" << std::endl;
+                        std::cin >> choice2; 
+			
+		case 3: 
+                        std::cout << "Putting the card in the bottom of the deck." << std::endl;
+			push_deck(deck, tail_deck, head_hand->suit, head_hand->number); // suit and number comes from hand on all of these
+			pop_hand(head_hand, first_hand);//pop hand that was sent to deck
+                        actions--;
+                        left++; //adds to the cards in the deck
+		        break;
+                case 4:
+                        if(turn == 1) {
+                          std::cout << "Can't quit on turn 1!" << std::endl;
+                          break;
+                        }
+                	game_end = true; 
+                        break;
+                default: 
+                        std::cin.clear();
+                        std::cin.ignore();
+                	std::cout << "Invalid input, please try again." << std::endl;
+                	choice = 0;
+                        break;
+             }
+             if(actions == 0) { 
+  	       std::cout << "Sorted Stacks: ";
+  	       std::cout << "| " << tailA->suit << tailA->number << " | " << tailB->suit << tailB->number << " | " << tailC->suit << tailC->number << " | ";
+  	       std::cout << "                Temporary Stacks: " << tailO1->suit << tailO1->number << " | " << tailO2->suit << tailO2->number << " | " << tailO3->suit << tailO3->number << " | ";
+  	       std:: cout << tailO4->suit << tailO4->number << " | " << tailO5->suit << tailO5->number << " | " << std::endl;
+ 
+                turn++;
+             }
+	      if(left == 0) //if the deck is empty and the hand is empty
+              {
+		game_end = true;
+              }//end game	
+	}
   
 }
