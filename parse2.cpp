@@ -40,6 +40,7 @@ void push(node* &tail, node* &first, int &counter, int size, char input, int val
       tail->suit = input; 
       tail->number = value;
       tail = tail->next; //sets tail back to the first spot in the hand
+      counter++;
     }
     else{
       if(counter == size) {
