@@ -35,13 +35,17 @@ void push_deck(node array[], int & counter, char input, int value) {
 
 void push(node* &tail, node* &first, int &counter, int size, char input, int value)
 {  
-    if(counter == size) { //checks to see if the tail reaches hand size
-      counter = 0; //loops tail back around
-      tail = first; //sets tail back to the first spot in the hand
+    if(counter == size-1) { //checks to see if the tail reaches hand size
+      tail->next = first;
       tail->suit = input; 
       tail->number = value;
+      tail = tail->next; //sets tail back to the first spot in the hand
+      counter++;
     }
     else{
+      if(counter == size) {
+          counter = 0;
+      }
       tail->suit = input; 
       tail->number = value;
       tail->next = new node; 
@@ -57,15 +61,15 @@ node pop_deck(node array[], int & head) {
 }
 
 void pop_hand(node * &head, node * &first) {
-  if(head->next == NULL) {
+  /*if(head->next == NULL) {
     head = first;
   }
-  else {
+  else {*/
     head = head->next;
-  }
+  //}
 }
-void pop_stack(node* &tail,node* &head)
-{
+
+void pop_stack(node* &tail,node* &head){
 	 if (isEmpty(head)) //check if empty list
     {
         cout << "Empty" << endl;
@@ -125,27 +129,81 @@ void print(node deck[], int counter, int size) {
 //print for hands or anything using linked lists
 void print(node * head, int size, node * first) { 
   for(int i=0;i<size;i++) { 
-    if(head == NULL) {
-      head = first;
-    }
     std::cout << head->suit << " " << head->number;
     std::cout << std::endl;
     head = head->next;
   }
 }
-/*
-void sort_choice(int sort_choice,node* &tail_hand,node* &head_hand,char suit, int number)
-{
-	std::cin >> sort_choice;
+
+int main() {
+  int choice;
+  int size_deck = 30; 
+  int size_hand = 5;
+  int turn = 1; // number of turns 
+  
+  //initializes decks
+  node deck[size_deck]; //ring buffer array for deck 
+  int head_deck = 0; //effective head pointer for the deck
+  int tail_deck = 0; //next availible place to put values in the deck
+  parse(deck, tail_deck); //fills up the deck
+  
+  //initialize hand
+  node * first_hand = new node; //already have new node as temp in function
+  node * head_hand = first_hand; //head of the queue used to pop values
+  node * tail_hand = first_hand; //tail of the queue used to store values
+  int counter_hand = 0; 
+  
+  //3 sorting stack nodes initialize
+	node* head = new node;
+	node* headA = NULL;
+	node* tailA = head;
+	
+	node* headB = NULL;
+	node* tailB = head;
+	
+	node* headC = NULL;
+	node* tailC = head;
+	// 5 sorting stack nodes initialize
+	node* headO1 = NULL;
+	node* tailO1 = head;
+	node* headO2 = NULL;
+	node* tailO2 = head;
+	node* headO3 = NULL;
+	node* tailO3 = head;
+	node* headO4 = NULL;
+	node* tailO4 = head;	
+	node* headO5 = NULL;
+	node* tailO5 = head;
+	int counter_sort = 0;
+	int iA,iB,iC; //suit A,B,C counters for sort full
+	
+	std::cout << "Drawing..." << std::endl;
+	for (int i = 0; i < 5; i++) //first time starting - draw 5 cards into hand as queue
+	{
+		push(tail_hand, first_hand, counter_hand, size_hand, deck[head_deck].suit, deck[head_deck].number); 
+                pop_deck(deck, head_deck); //makes sure that the card is removed from the deck
+	}   
+  pop_hand(head_hand, first_hand);
+  print(head_hand, size_hand, first_hand); 
+  
+  //std::cout << head_hand->suit << " " << head_hand->number << std::endl;
+
+
+
+  //sort algorithm - determines which stack user wants to put card in and will only allow user to put in card numbers
+  //1 less than current value at top of respective sorting stacks
+  /*
+  int sort_choice;
+  std::cin >> sort_choice;
   if(sort_choice == 1) // push hand into sorting stack 1
   {
-	  if(number == 0) // if nothing in stack, set number to 1 higher than input
+	  if(tailO1->number == 0) // if nothing in stack, set number to 1 higher than input
 	  {
-		  number = (tail_hand->number)+1;
+		  tailO1->number = (tail_hand->number)+1;
 	  }
-	  if(tail_hand->number = number+1) // must be lower value than card currently in stack
+	  if(tail_hand->number = (tailO1->number)+1) // must be lower value than card currently in stack
 	  {  
-	  push(tailO1,headO1,counter_sort,size_hand,suit,number);
+	  push(tailO1,headO1,counter_sort,size_hand,tail_hand->suit,tail_hand->number);
 		}
 		else
 		{
@@ -217,63 +275,7 @@ void sort_choice(int sort_choice,node* &tail_hand,node* &head_hand,char suit, in
 			// return back to sort menu?
 		}	  
   }
-}
-*/
-
-int main() {
-  int choice;
-  int sort_choice;
-  int size_deck = 30; 
-  int size_hand = 5;
-  int turn = 1; // number of turns 
-  
-  //initializes decks
-  node deck[size_deck]; //ring buffer array for deck 
-  int head_deck = 0; //effective head pointer for the deck
-  int tail_deck = 0; //next availible place to put values in the deck
-  parse(deck, tail_deck); //fills up the deck
-  
-  //initialize hand
-  node * first_hand = new node; //already have new node as temp in function
-  node * head_hand = first_hand; //head of the queue used to pop values
-  node * tail_hand = first_hand; //tail of the queue used to store values
-  int counter_hand = 0; 
-  
-  //3 sorting stack nodes initialize
-	node* head = new node;
-	node* headA = NULL;
-	node* tailA = head;
-	
-	node* headB = NULL;
-	node* tailB = head;
-	
-	node* headC = NULL;
-	node* tailC = head;
-	// 5 sorting stack nodes initialize
-	node* headO1 = NULL;
-	node* tailO1 = head;
-	node* headO2 = NULL;
-	node* tailO2 = head;
-	node* headO3 = NULL;
-	node* tailO3 = head;
-	node* headO4 = NULL;
-	node* tailO4 = head;	
-	node* headO5 = NULL;
-	node* tailO5 = head;
-	int counter_sort = 0;
-	int iA,iB,iC; //suit A,B,C counters for sort full
-	
-	std::cout << "Drawing..." << std::endl;
-	for (int i = 0; i < 5; i++) //first time starting - draw 5 cards into hand as queue
-	{
-		push(tail_hand, first_hand, counter_hand, size_hand, deck[head_deck].suit, deck[head_deck].number); 
-                pop_deck(deck, head_deck); //makes sure that the card is removed from the deck
-	}   
-  pop_hand(head_hand, first_hand);
-  print(head_hand, size_hand, first_hand); 
-  
-  //sort algorithm - determines which stack user wants to put card in and will only allow user to put in card numbers
-  //1 less than current value at top of respective sorting stacks
+  */
   
   /*
   std::cout << "Enter 1, 2, 3 to place onto the respective sorting stacks ";
@@ -357,10 +359,5 @@ int main() {
 		{
 		game_end = true; }//end game	
 	}*/
-	
-	//displays top of each sorted and final output stacks that turn
-	std::cout << "Sorted Stacks: ";
-	std::cout << "| " << tailA->suit << tailA->number << " | " << tailB->suit << tailB->number << " | " << tailC->suit << tailC->number << " | ";
-	std::cout << "		    	Temporary Stacks: " << tailO1->suit << tailO1->number << " | " << tailO2->suit << tailO2->number << " | " << tailO3->suit << tailO3->number << " | ";
-	std:: cout << tailO4->suit << tailO4->number << " | " << tailO5->suit << tailO5->number << " | " << std::endl;
+  
 }
