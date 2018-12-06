@@ -331,5 +331,12 @@ int main() {
 		{
 		game_end = true; }//end game	
 	}*/
-  
+	
+	//displays top of each sorted and final output stacks that turn
+	/*
+	std::cout << "Sorted Stacks: ";
+	std::cout << "| " << tailA->suit << tailA->number << " | " << tailB->suit << tailB->number << " | " << tailC->suit << tailC->number << " | ";
+	std::cout << "		    	Temporary Stacks: " << tailO1->suit << tailO1->number << " | " << tailO2->suit << tailO2->number << " | " << tailO3->suit << tailO3->number << " | ";
+	std:: cout << tailO4->suit << tailO4->number << " | " << tailO5->suit << tailO5->number << " | " << std::endl;
+	*/
 }
