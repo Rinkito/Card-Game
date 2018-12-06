@@ -1,7 +1,8 @@
 #include <iostream>
 #include <iomanip>
 #include <fstream>
-
+#include <thread>
+#include <chrono>
 struct node {
   char suit;
   int number;
