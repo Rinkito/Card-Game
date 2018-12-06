@@ -33,23 +33,20 @@ void push_deck(node array[], int & counter, char input, int value) {
   }
 }
 
-void push(node* &tail, node* &first, int &counter, char input, int value)
-{
-    node* temp = new node; 
-    temp->suit = input; 
-    temp->number = value;
-    temp->next = new node; 
-    if (first == NULL) 
-    {
-        first = tail = temp;
-        tail->next = new node;
-        counter++;
+void push(node* &tail, node* &first, int &counter, int size, char input, int value)
+{  
+    if(counter == size) { //checks to see if the tail reaches hand size
+      counter = 0; //loops tail back around
+      tail = first; //sets tail back to the first spot in the hand
+      tail->suit = input; 
+      tail->number = value;
     }
-    else //otherwise, we push in from tail
-    {
-    //tail->next = temp;
-    tail = temp;
-    counter++;
+    else{
+      tail->suit = input; 
+      tail->number = value;
+      tail->next = new node; 
+      tail = tail->next;
+      counter++;
     }
 }
 
@@ -148,14 +145,13 @@ int main() {
 	std::cout << "Drawing..." << std::endl;
 	for (int i = 0; i < 5; i++) //first time starting - draw 5 cards into hand as queue
 	{
-		push(tail_hand,head_hand,counter_hand,deck[head_deck].suit, deck[head_deck].number); 
+		push(tail_hand, first_hand, counter_hand, size_hand, deck[head_deck].suit, deck[head_deck].number); 
                 pop_deck(deck, head_deck); //makes sure that the card is removed from the deck
-	}    
-  //print(head_hand, size_hand, first_hand);  
-  std::cout << head_hand->suit << " " << head_hand->number << std::endl;      
-
-
-  //print(deck, counter_deck);
+	}   
+  std::cout << counter_hand << std::endl; 
+  push(tail_hand, first_hand, counter_hand, size_hand, 'A', 4);
+  print(head_hand, size_hand, first_hand);  
+  
   /*
   std::cout << "Enter 1, 2, 3 to place onto the respective sorting stacks ";
   std::cout << "or 4 to place first card in hand back into bottom of deck." << std::endl;
