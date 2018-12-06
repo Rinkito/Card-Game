@@ -168,7 +168,7 @@ int main() {
 
 	node* headC = NULL;
 	node* tailC = new node;
-        node* topA = new node;        
+        node* topC = new node;        
 
         //initialize these for later use
         tailA->number = 0;
@@ -177,19 +177,19 @@ int main() {
 
 	// 5 sorting stack nodes initialize
 	node* headO1 = NULL;
-	node* tailO1 = head;
-        node* topO1 = head;
+	node* tailO1 = new node;
+        node* topO1 = new node;
 	node* headO2 = NULL;
-	node* tailO2 = head;
+	node* tailO2 = new node;
         node* topO2 = new node;
 	node* headO3 = NULL;
-	node* tailO3 = head;
+	node* tailO3 = new node;
         node* topO3 = new node;
 	node* headO4 = NULL;
-	node* tailO4 = head;
+	node* tailO4 = new node;
         node* topO4 = new node;	
 	node* headO5 = NULL;
-	node* tailO5 = head;
+	node* tailO5 = new node;
         node* topO5 = new node;
 	int counter_sort = 0;
 	int iA,iB,iC; //suit A,B,C counters for sort full
@@ -427,5 +427,19 @@ int main() {
 		game_end = true;
               }//end game	
 	}
+  delete first_hand;
+  node * temp;
+  while(head_hand != NULL) {
+    temp = head_hand->next;
+    delete head_hand;
+    head_hand = temp;
+  }
+  delete tail_hand;
+  while(headA != NULL) {
+    temp = headA->next;
+    delete headA;
+    headA = temp;
+  }
   
+
 }
