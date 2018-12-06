@@ -55,6 +55,10 @@ void push(node* &tail, node* &first, int &counter, int size, char input, int val
 }
 
 node pop_deck(node array[], int & head) {
+  if(isEmpty(head)) {
+    std::cout << "Deck is empty!" << std::endl;
+    return NULL;
+  }
   node temp = array[head];
   head++;
   return temp; //return the node that was the head
@@ -68,6 +72,29 @@ void pop_hand(node * &head, node * &first) {
     head = head->next;
   //}
 }
+
+void pop_stack(node* &tail,node* &head,int sort_counter){
+     if (isEmpty(sort_counter)) //check if empty list
+    {
+        std::cout << "Empty" << std::endl;
+        return;
+
+    }
+    else if(head == tail) //identical case to queue, if there is 1 node left
+    {
+        delete head;
+        head = tail = NULL;
+    }
+    node* temp = tail; //now we have a temporary node set equal to the current tail
+    tail = head; //because temp is now at tail, we can change tail to equal head (back to beginning of list)
+    while (tail->next != temp) //this will iterate through the linked list until just before the current temp
+    { //which temp is now in previous tail's pos, or at last of list
+        tail = tail->next; // set tail equal to the node before the last of the list for future pop
+    }
+    tail->next = NULL; // unlink the very last node because temp is already that node
+    delete temp; // now delete temp since we had stored in the data char
+}
+
 
 //opens file and fills up the deck
 void parse(node array[], int &tail) { 
@@ -162,13 +189,23 @@ int main() {
 	}   
   pop_hand(head_hand, first_hand);
   print(head_hand, size_hand, first_hand); 
+
   
-  //std::cout << head_hand->suit << " " << head_hand->number << std::endl;
+
+
 
 
 
   //sort algorithm - determines which stack user wants to put card in and will only allow user to put in card numbers
   //1 less than current value at top of respective sorting stacks
+  /*
+  std::cout << "Sorted Stacks: ";
+  std::cout << "| " << tailA->suit << tailA->number << " | " << tailB->suit << tailB->number << " | " << tailC->suit << tailC->number << " | ";
+  std::cout << "                Temporary Stacks: " << tailO1->suit << tailO1->number << " | " << tailO2->suit << tailO2->number << " | " << tailO3->suit << tailO3->number << " | ";
+  std:: cout << tailO4->suit << tailO4->number << " | " << tailO5->suit << tailO5->number << " | " << std::endl;
+  */
+
+
   /*
   int sort_choice;
   std::cin >> sort_choice;
