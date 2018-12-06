@@ -193,104 +193,20 @@ int main() {
         node* topO5 = new node;
 	int counter_sort = 0;
 	int iA,iB,iC; //suit A,B,C counters for sort full
-	
-	std::cout << "Drawing..." << std::endl;
-	for (int i = 0; i < 5; i++) //first time starting - draw 5 cards into hand as queue
-	{
-		push(tail_hand, first_hand, counter_hand, size_hand, deck[head_deck].suit, deck[head_deck].number); 
-                pop_deck(deck, head_deck); //makes sure that the card is removed from the deck
-	}   
-  
+
   //sort algorithm - determines which stack user wants to put card in and will only allow user to put in card numbers
   //1 less than current value at top of respective sorting stacks
-  /*
-  int sort_choice;
-  std::cin >> sort_choice;
-  if(sort_choice == 1) // push hand into sorting stack 1
-  {
-	  if(tailO1->number == 0) // if nothing in stack, set number to 1 higher than input
-	  {
-		  tailO1->number = (tail_hand->number)+1;
-	  }
-	  if(tail_hand->number = (tailO1->number)+1) // must be lower value than card currently in stack
-	  {  
-	  push(tailO1,headO1,counter_sort,size_hand,tail_hand->suit,tail_hand->number);
-		}
-		else
-		{
-			std::cout << "Not a valid value to be placed" << std::endl;
-			// return back to sort menu?
-		}	  
+ 
+  std::cout << "Drawing..." << std::endl;
+  for(int i=0; i<5; i++) {
+    push(tail_hand, first_hand, counter_hand, size_hand, deck[head_deck].suit, deck[head_deck].number);
+    pop_deck(deck, head_deck);
+    left--;
   }
-  else if(sort_choice == 2)
-  {
-	  if(tailO2->number == 0) // if nothing in stack, set number to 1 higher than input
-	  {
-		  tailO2->number = (tail_hand->number)+1;
-	  }
-	  if(tail_hand->number = (tailO2->number)+1) // must be lower value than card currently in stack
-	  {  
-	  push(tailO2,headO2,counter_sort,size_hand,tail_hand->suit,tail_hand->number);
-		}
-		else
-		{
-			std::cout << "Not a valid value to be placed" << std::endl;
-			// return back to sort menu?
-		}	  
-  }
-  else if(sort_choice == 3)
-  {
-	  if(tailO3->number == 0) // if nothing in stack, set number to 1 higher than input
-	  {
-		  tailO3->number = (tail_hand->number)+1;
-	  }
-	  if(tail_hand->number = (tailO3->number)+1) // must be lower value than card currently in stack
-	  {  
-	  push(tailO3,headO3,counter_sort,size_hand,tail_hand->suit,tail_hand->number);
-		}
-		else
-		{
-			std::cout << "Not a valid value to be placed" << std::endl;
-			// return back to sort menu?
-		}	  
-  }
-  else if(sort_choice == 4)
-  {
-	  if(tailO4->number == 0) // if nothing in stack, set number to 1 higher than input
-	  {
-		  tailO4->number = (tail_hand->number)+1;
-	  }
-	  if(tail_hand->number = (tailO4->number)+1) // must be lower value than card currently in stack
-	  {  
-	  push(tailO4,headO4,counter_sort,size_hand,tail_hand->suit,tail_hand->number);
-		}
-		else
-		{
-			std::cout << "Not a valid value to be placed" << std::endl;
-			// return back to sort menu?
-		}	  
-  }
-  else if(sort_choice == 5)
-  {
-	  if(tailO5->number == 0) // if nothing in stack, set number to 1 higher than input
-	  {
-		  tailO5->number = (tail_hand->number)+1;
-	  }
-	  if(tail_hand->number = (tailO5->number)+1) // must be lower value than card currently in stack
-	  {  
-	  push(tailO5,headO5,counter_sort,size_hand,tail_hand->suit,tail_hand->number);
-		}
-		else
-		{
-			std::cout << "Not a valid value to be placed" << std::endl;
-			// return back to sort menu?
-		}	  
-  }
-  */
-  
   bool game_end = false;
 	while(game_end == false)
-	{
+	{ 
+                
                 std::cout << "Hand: " << std::endl;
                 print(head_hand, actions, first_hand); //pass actions so prints just the right amount of cards
                 std::cout << "1: To enter your card into sorted pile (final product)" << std::endl;
@@ -322,8 +238,9 @@ int main() {
 		      }
                       else {
 		  	iA++;
-		  	push(tailA,headA,counter_sort, 100, tail_hand->suit, tail_hand->number); //make the stack huge
-                  	pop_hand(head_hand, first_hand);//pop hand
+                        topA = tailA;
+		  	push(tailA,headA,counter_sort, 100, head_hand->suit, head_hand->number); //make the stack huge
+                  	pop_hand(head_hand, first_hand);//pop hand 
                         actions--;
                         break;
                       }
@@ -347,6 +264,7 @@ int main() {
 			}
                         else{
 			  iB++;
+                          topA = tailA;
 			  push(tailB,headB,counter_sort, 100, tail_hand->suit, tail_hand->number);
 			  pop_hand(head_hand, first_hand);//pop
                           actions--;
@@ -372,6 +290,7 @@ int main() {
 			}
                         else{ //exception handling
 			  iC++;
+                          topC = tailC;
 			  push(tailC,headC,counter_sort, 100, tail_hand->suit,tail_hand->number);
 			  pop_hand(head_hand, first_hand);//pop
                           actions--;
@@ -391,8 +310,101 @@ int main() {
                     break; 
                 case 2: 
                 	std::cout << "Choose a sorting pile from 1-5" << std::endl;
-                        std::cin >> choice2; 
-			
+                        int sort_choice;
+                        std::cin >> sort_choice;
+                        if(sort_choice == 1) // push hand into sorting stack 1
+                        {
+	                  if(tailO1->number == 0) // if nothing in stack, set number to 1 higher than input
+	                  {
+		            tailO1->number = (tail_hand->number)+1;
+	                  }
+	                  if(tail_hand->number = (tailO1->number)+1) // must be lower value than card currently in stack
+	                  {  
+	                    push(tailO1,headO1,counter_sort,size_hand,head_hand->suit,head_hand->number);
+                            topO1->number = tail_hand->number;
+                            topO1->suit = tail_hand->suit; 
+                            pop_hand(head_hand, first_hand);
+                            actions--;
+		          }
+		          else
+		          {
+			    std::cout << "Not a valid value to be placed" << std::endl;
+			    break; // return back to sort menu
+		          }	  
+                        }
+			else if(sort_choice == 2)
+                        {
+	                  if(tailO2->number == 0) // if nothing in stack, set number to 1 higher than input
+	                  {
+		            tailO2->number = (tail_hand->number)+1;
+	                  }
+	                  if(tail_hand->number = (tailO2->number)+1) // must be lower value than card currently in stack
+	                  {  
+	                    push(tailO2,headO2,counter_sort,size_hand,head_hand->suit,head_hand->number);
+                            pop_hand(head_hand, first_hand);
+                            actions--;
+		          }
+		          else
+		          {
+			    std::cout << "Not a valid value to be placed" << std::endl;
+			    break; // return back to sort menu
+		          }	  
+                        }
+                        else if(sort_choice == 3)
+                        {
+	                  if(tailO3->number == 0) // if nothing in stack, set number to 1 higher than input
+	                  {
+		            tailO3->number = (tail_hand->number)+1;
+	                  }
+	                  if(tail_hand->number = (tailO3->number)+1) // must be lower value than card currently in stack
+	                  {  
+	                    push(tailO3,headO3,counter_sort,size_hand,head_hand->suit,head_hand->number);
+                            pop_hand(head_hand, first_hand);
+                            actions--;
+		          }
+		          else
+		          {
+			    std::cout << "Not a valid value to be placed" << std::endl;
+			    break; // return back to sort menu
+		          }	  
+                        }
+                        else if(sort_choice == 4)
+                          {
+	                    if(tailO4->number == 0) // if nothing in stack, set number to 1 higher than input
+	                    {
+		              tailO4->number = (tail_hand->number)+1;
+	                    }
+	                    if(tail_hand->number = (tailO4->number)+1) // must be lower value than card currently in stack
+	                    {  
+	                      push(tailO4,headO4,counter_sort,size_hand,head_hand->suit,head_hand->number);
+                              pop_hand(head_hand, first_hand);
+                              actions--;
+		            }
+		            else
+		            {
+			      std::cout << "Not a valid value to be placed" << std::endl;
+			      break; // return back to sort menu?
+		            }	  
+                           }
+                           else if(sort_choice == 5)
+                           {
+	                     if(tailO5->number == 0) // if nothing in stack, set number to 1 higher than input
+	                     {
+		               tailO5->number = (tail_hand->number)+1;
+	                     }
+	                     if(tail_hand->number = (tailO5->number)+1) // must be lower value than card currently in stack
+	                     {  
+	                       push(tailO5,headO5,counter_sort,size_hand,head_hand->suit,head_hand->number);
+                               pop_hand(head_hand, first_hand);
+                               actions--;
+		             }
+		             else
+		             {
+			       std::cout << "Not a valid value to be placed" << std::endl;
+			       break; // return back to sort menu?
+		             }	  
+                           }
+                           break;
 		case 3: 
                         std::cout << "Putting the card in the bottom of the deck." << std::endl;
 			push_deck(deck, tail_deck, head_hand->suit, head_hand->number); // suit and number comes from hand on all of these
@@ -416,17 +428,25 @@ int main() {
              }
              if(actions == 0) { 
   	       std::cout << "Sorted Stacks: ";
-  	       std::cout << "| " << tailA->suit << tailA->number << " | " << tailB->suit << tailB->number << " | " << tailC->suit << tailC->number << " | ";
-  	       std::cout << "                Temporary Stacks: " << tailO1->suit << tailO1->number << " | " << tailO2->suit << tailO2->number << " | " << tailO3->suit << tailO3->number << " | ";
-  	       std:: cout << tailO4->suit << tailO4->number << " | " << tailO5->suit << tailO5->number << " | " << std::endl;
+  	       std::cout << "| " << topA->suit << topA->number << " | " << topB->suit << topB->number << " | " << topC->suit << topC->number << " | ";
+  	       std::cout << "                Temporary Stacks: " << topO1->suit << topO1->number << " | " << topO2->suit << topO2->number << " | " << topO3->suit << topO3->number << " | ";
+  	       std:: cout << topO4->suit << topO4->number << " | " << topO5->suit << topO5->number << " | " << std::endl;
  
                 turn++;
+                std::cout << "Drawing..." << std::endl;
+                for(int i=0; i<5; i++) {
+                  push(tail_hand, first_hand, counter_hand, size_hand, deck[head_deck].suit, deck[head_deck].number);
+                  pop_deck(deck, head_deck);
+                  left--;
+                  actions = 5;
+                }
              }
 	      if(left == 0) //if the deck is empty and the hand is empty
               {
 		game_end = true;
               }//end game	
 	}
+  /*/delete all the pointers
   delete first_hand;
   node * temp;
   while(head_hand != NULL) {
@@ -440,6 +460,55 @@ int main() {
     delete headA;
     headA = temp;
   }
-  
-
+  delete tailA;
+  delete topA;
+  while(headB != NULL) {
+    temp = headB->next;
+    delete headB;
+    headB = temp;
+  }
+  delete tailB;
+  delete topB;
+  while(headC != NULL) {
+    temp = headC->next;
+    delete headC;
+    headC = temp;
+  }
+  delete tailC;
+  delete topC;
+  while(headO1 != NULL) {
+    temp = headO1->next;
+    delete headO1;
+    headO1 = temp;
+  }
+  delete tailO1;
+  delete topO1;
+  while(headO2 != NULL) {
+    temp = headO2->next;
+    delete headO2;
+    headO2 = temp;
+  }
+  delete tailO2;
+  delete topO2;
+  while(headO3 != NULL) {
+    temp = headO3->next;
+    delete headO3;
+    headO3 = temp;
+  }
+  delete tailO3;
+  delete topO3;
+  while(headO4 != NULL) {
+    temp = headO4->next;
+    delete headO4;
+    headO4 = temp;
+  }
+  delete tailO4;
+  delete topO4;
+  while(headO5 != NULL) {
+    temp = headO5->next;
+    delete headO5;
+    headO5 = temp;
+  }
+  delete tailO5;
+  delete topO5;*/
 }
