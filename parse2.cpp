@@ -55,10 +55,6 @@ void push(node* &tail, node* &first, int &counter, int size, char input, int val
 }
 
 node pop_deck(node array[], int & head) {
-  if(isEmpty(head)) {
-    std::cout << "Deck is empty!" << std::endl;
-    return NULL;
-  }
   node temp = array[head];
   head++;
   return temp; //return the node that was the head
@@ -187,6 +183,7 @@ int main() {
 		push(tail_hand, first_hand, counter_hand, size_hand, deck[head_deck].suit, deck[head_deck].number); 
                 pop_deck(deck, head_deck); //makes sure that the card is removed from the deck
 	}   
+  pop_hand(head_hand, first_hand);
   pop_hand(head_hand, first_hand);
   print(head_hand, size_hand, first_hand); 
 
