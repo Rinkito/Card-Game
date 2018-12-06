@@ -54,6 +54,25 @@ void push(node* &tail, node* &first, int &counter, int size, char input, int val
     }
 }
 
+void push_stack(node* &tail, node* &first, int &counter, int size, char input, int value)
+{  
+    if(counter == 0) { //checks to see if the tail reaches hand size
+      tail->suit = input; 
+      tail->number = value;    
+      tail->next = new node;
+      tail = tail->next; //sets tail back to the first spot in the hand
+      counter++;
+    }
+    else{
+      tail = tail->next;
+      tail->suit = input; 
+      tail->number = value;
+      tail->next = new node; 
+      //tail = tail->next;
+      counter++;
+    }
+}
+
 node pop_deck(node array[], int & head) {
   node temp = array[head];
   head++;
@@ -212,7 +231,8 @@ int main() {
                 std::cout << "1: To enter your card into sorted pile (final product)" << std::endl;
                 std::cout << "2: To enter your card into a sorting space" << std::endl;
                 std::cout << "3: To place first card in hand back into bottom of deck." << std::endl;
-                std::cout << "4: To quit (but not on the first turn)." << std::endl;
+                std::cout << "4: To place first card in sorting space to sorted pile." << std::endl;
+                std::cout << "5: To quit (but not on the first turn)." << std::endl;
                 std::cin >> choice; //menu options
 		std::cout << "TURN " << turn << std::endl;
                 switch(choice) {
@@ -412,7 +432,12 @@ int main() {
                         actions--;
                         left++; //adds to the cards in the deck
 		        break;
-                case 4:
+                
+                case 4: 
+                       std::cout << "Which stack would you like to take from(1-5): " << std::endl;
+                       std::cin >> choice2;
+                       
+                case 5:
                         if(turn == 1) {
                           std::cout << "Can't quit on turn 1!" << std::endl;
                           break;
