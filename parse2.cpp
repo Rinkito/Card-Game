@@ -139,6 +139,17 @@ int main() {
 	
 	node* headC = NULL;
 	node* tailC = head;
+	// 5 sorting stack nodes initialize
+	node* headO1 = NULL;
+	node* tailO1 = head;
+	node* headO2 = NULL;
+	node* tailO2 = head;
+	node* headO3 = NULL;
+	node* tailO3 = head;
+	node* headO4 = NULL;
+	node* tailO4 = head;	
+	node* headO5 = NULL;
+	node* tailO5 = head;
 	int counter_sort = 0;
 	int iA,iB,iC; //suit A,B,C counters for sort full
 	
@@ -150,6 +161,93 @@ int main() {
 	}   
   pop_hand(head_hand, first_hand);
   print(head_hand, size_hand, first_hand); 
+  
+  //sort algorithm - determines which stack user wants to put card in and will only allow user to put in card numbers
+  //1 less than current value at top of respective sorting stacks
+  /*
+  int sort_choice;
+  std::cin >> sort_choice;
+  if(sort_choice == 1) // push hand into sorting stack 1
+  {
+	  if(tailO1->number == 0) // if nothing in stack, set number to 1 higher than input
+	  {
+		  tailO1->number = (tail_hand->number)+1;
+	  }
+	  if(tail_hand->number = (tailO1->number)+1) // must be lower value than card currently in stack
+	  {  
+	  push(tailO1,headO1,counter_sort,size_hand,tail_hand->suit,tail_hand->number);
+		}
+		else
+		{
+			std::cout << "Not a valid value to be placed" << std::endl;
+			// return back to sort menu?
+		}	  
+  }
+  else if(sort_choice == 2)
+  {
+	  if(tailO2->number == 0) // if nothing in stack, set number to 1 higher than input
+	  {
+		  tailO2->number = (tail_hand->number)+1;
+	  }
+	  if(tail_hand->number = (tailO2->number)+1) // must be lower value than card currently in stack
+	  {  
+	  push(tailO2,headO2,counter_sort,size_hand,tail_hand->suit,tail_hand->number);
+		}
+		else
+		{
+			std::cout << "Not a valid value to be placed" << std::endl;
+			// return back to sort menu?
+		}	  
+  }
+  else if(sort_choice == 3)
+  {
+	  if(tailO3->number == 0) // if nothing in stack, set number to 1 higher than input
+	  {
+		  tailO3->number = (tail_hand->number)+1;
+	  }
+	  if(tail_hand->number = (tailO3->number)+1) // must be lower value than card currently in stack
+	  {  
+	  push(tailO3,headO3,counter_sort,size_hand,tail_hand->suit,tail_hand->number);
+		}
+		else
+		{
+			std::cout << "Not a valid value to be placed" << std::endl;
+			// return back to sort menu?
+		}	  
+  }
+  else if(sort_choice == 4)
+  {
+	  if(tailO4->number == 0) // if nothing in stack, set number to 1 higher than input
+	  {
+		  tailO4->number = (tail_hand->number)+1;
+	  }
+	  if(tail_hand->number = (tailO4->number)+1) // must be lower value than card currently in stack
+	  {  
+	  push(tailO4,headO4,counter_sort,size_hand,tail_hand->suit,tail_hand->number);
+		}
+		else
+		{
+			std::cout << "Not a valid value to be placed" << std::endl;
+			// return back to sort menu?
+		}	  
+  }
+  else if(sort_choice == 5)
+  {
+	  if(tailO5->number == 0) // if nothing in stack, set number to 1 higher than input
+	  {
+		  tailO5->number = (tail_hand->number)+1;
+	  }
+	  if(tail_hand->number = (tailO5->number)+1) // must be lower value than card currently in stack
+	  {  
+	  push(tailO5,headO5,counter_sort,size_hand,tail_hand->suit,tail_hand->number);
+		}
+		else
+		{
+			std::cout << "Not a valid value to be placed" << std::endl;
+			// return back to sort menu?
+		}	  
+  }
+  */
   
   /*
   std::cout << "Enter 1, 2, 3 to place onto the respective sorting stacks ";
