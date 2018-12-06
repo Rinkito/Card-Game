@@ -35,13 +35,16 @@ void push_deck(node array[], int & counter, char input, int value) {
 
 void push(node* &tail, node* &first, int &counter, int size, char input, int value)
 {  
-    if(counter == size) { //checks to see if the tail reaches hand size
-      counter = 0; //loops tail back around
-      tail = first; //sets tail back to the first spot in the hand
+    if(counter == size-1) { //checks to see if the tail reaches hand size
+      tail->next = first;
       tail->suit = input; 
       tail->number = value;
+      tail = tail->next; //sets tail back to the first spot in the hand
     }
     else{
+      if(counter == size) {
+          counter = 0;
+      }
       tail->suit = input; 
       tail->number = value;
       tail->next = new node; 
@@ -57,12 +60,12 @@ node pop_deck(node array[], int & head) {
 }
 
 void pop_hand(node * &head, node * &first) {
-  if(head->next == NULL) {
+  /*if(head->next == NULL) {
     head = first;
   }
-  else {
+  else {*/
     head = head->next;
-  }
+  //}
 }
 
 //opens file and fills up the deck
@@ -102,9 +105,6 @@ void print(node deck[], int counter, int size) {
 //print for hands or anything using linked lists
 void print(node * head, int size, node * first) { 
   for(int i=0;i<size;i++) { 
-    if(head == NULL) {
-      head = first;
-    }
     std::cout << head->suit << " " << head->number;
     std::cout << std::endl;
     head = head->next;
@@ -162,6 +162,10 @@ int main() {
   pop_hand(head_hand, first_hand);
   print(head_hand, size_hand, first_hand); 
   
+  //std::cout << head_hand->suit << " " << head_hand->number << std::endl;
+
+
+
   //sort algorithm - determines which stack user wants to put card in and will only allow user to put in card numbers
   //1 less than current value at top of respective sorting stacks
   /*
