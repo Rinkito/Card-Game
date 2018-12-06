@@ -154,6 +154,21 @@ void print(node * head, int size, node * first) {
   }
 }
 
+void load(std::string a) //Loading animation
+{
+	std::string dot[] = {".", ". .", ". . ."};
+	for (int j = 0; j < 3; j++)
+	{
+		for (int i = 0; i < 3; i++)
+		{
+			std::cout << a << dot[i] << std::endl;
+			std::this_thread::sleep_for(std::chrono::milliseconds(300));
+			system("clear");
+		}
+	}
+}
+
+
 int main() {
   int choice;
   int choice2; 
@@ -216,7 +231,7 @@ int main() {
   //sort algorithm - determines which stack user wants to put card in and will only allow user to put in card numbers
   //1 less than current value at top of respective sorting stacks
  
-  std::cout << "Drawing..." << std::endl;
+  load("Drawing");
   for(int i=0; i<5; i++) {
     push(tail_hand, first_hand, counter_hand, size_hand, deck[head_deck].suit, deck[head_deck].number);
     pop_deck(deck, head_deck);
@@ -237,6 +252,7 @@ int main() {
 		std::cout << "TURN " << turn << std::endl;
                 switch(choice) {
 		case 1:
+                  system ("clear");
                   while(true) {
                     std::cout << "Choose either pile 1: A, 2: B, 3: C, or 4 to quit (pick the number that corresponds to suit)." << std::endl;
                     std::cin >> choice2; 
@@ -326,6 +342,7 @@ int main() {
                     }
                     break; 
                 case 2: 
+                	system ("clear");
                 	std::cout << "Choose a sorting pile from 1-5" << std::endl;
                         int sort_choice;
                         std::cin >> sort_choice;
@@ -421,31 +438,35 @@ int main() {
                            }
                            break;
 		case 3: 
-                        std::cout << "Putting the card in the bottom of the deck." << std::endl;
+			system ("clear");
+			std::cout << "Putting the card in the bottom of the deck." << std::endl;
 			push_deck(deck, tail_deck, head_hand->suit, head_hand->number); // suit and number comes from hand on all of these
 			pop_hand(head_hand, first_hand);//pop hand that was sent to deck
                         actions--;
                         left++; //adds to the cards in the deck
 		        break;
                 
-                case 4: 
-                       std::cout << "Which stack would you like to take from(1-5): " << std::endl;
-                       std::cin >> choice2;
-                       
-                case 5:
-                        if(turn == 1) {
-                          std::cout << "Can't quit on turn 1!" << std::endl;
-                          break;
-                        }
-                	game_end = true; 
-                        break;
-                default: 
-                        std::cin.clear();
-                        std::cin.ignore();
-                	std::cout << "Invalid input, please try again." << std::endl;
-                	choice = 0;
-                        break;
-             }
+		case 4: 
+			   system ("clear");
+			   std::cout << "Which stack would you like to take from(1-5): " << std::endl;
+			   std::cin >> choice2;
+			   
+		case 5:
+				system ("clear");
+				if(turn == 1) {
+				  std::cout << "Can't quit on turn 1!" << std::endl;
+				  break;
+				}
+			game_end = true; 
+				break;
+		default: 
+				system ("clear");
+				std::cin.clear();
+				std::cin.ignore();
+			std::cout << "Invalid input, please try again." << std::endl;
+			choice = 0;
+				break;
+	 }
              if(actions == 0) { 
   	       std::cout << "Sorted Stacks: ";
   	       std::cout << "| " << tailA->suit << tailA->number << " | " << tailB->suit << tailB->number << " | " << tailC->suit << tailC->number << " | ";
@@ -453,7 +474,7 @@ int main() {
   	       std:: cout << tailO4->suit << tailO4->number << " | " << tailO5->suit << tailO5->number << " | " << std::endl;
  
                 turn++;
-                std::cout << "Drawing..." << std::endl;
+                load("Drawing");
                 for(int i=0; i<5; i++) {
                   push(tail_hand, first_hand, counter_hand, size_hand, deck[head_deck].suit, deck[head_deck].number);
                   pop_deck(deck, head_deck);
@@ -466,69 +487,4 @@ int main() {
 		game_end = true;
               }//end game	
 	}
-  /*/delete all the pointers
-  delete first_hand;
-  node * temp;
-  while(head_hand != NULL) {
-    temp = head_hand->next;
-    delete head_hand;
-    head_hand = temp;
-  }
-  delete tail_hand;
-  while(headA != NULL) {
-    temp = headA->next;
-    delete headA;
-    headA = temp;
-  }
-  delete tailA;
-  delete topA;
-  while(headB != NULL) {
-    temp = headB->next;
-    delete headB;
-    headB = temp;
-  }
-  delete tailB;
-  delete topB;
-  while(headC != NULL) {
-    temp = headC->next;
-    delete headC;
-    headC = temp;
-  }
-  delete tailC;
-  delete topC;
-  while(headO1 != NULL) {
-    temp = headO1->next;
-    delete headO1;
-    headO1 = temp;
-  }
-  delete tailO1;
-  delete topO1;
-  while(headO2 != NULL) {
-    temp = headO2->next;
-    delete headO2;
-    headO2 = temp;
-  }
-  delete tailO2;
-  delete topO2;
-  while(headO3 != NULL) {
-    temp = headO3->next;
-    delete headO3;
-    headO3 = temp;
-  }
-  delete tailO3;
-  delete topO3;
-  while(headO4 != NULL) {
-    temp = headO4->next;
-    delete headO4;
-    headO4 = temp;
-  }
-  delete tailO4;
-  delete topO4;
-  while(headO5 != NULL) {
-    temp = headO5->next;
-    delete headO5;
-    headO5 = temp;
-  }
-  delete tailO5;
-  delete topO5;*/
 }
