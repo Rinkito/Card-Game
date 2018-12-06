@@ -147,12 +147,13 @@ void print(node deck[], int counter, int size) {
 }
 
 //print for hands or anything using linked lists
-void print(node * head, int size, node * first) { 
+void print(node * head, int size, node * first) {
+	std::cout << "| "; 
   for(int i=0;i<size;i++) { 
-    std::cout << head->suit << " " << head->number;
-    std::cout << std::endl;
+    std::cout << head->suit << head->number << " | ";
     head = head->next;
   }
+  std::cout << std::endl;
 }
 
 void load(std::string a) //Loading animation
@@ -254,6 +255,7 @@ int main() {
                 switch(choice) {
 		case 1:
                   system ("clear");
+                  print(head_hand, actions, first_hand);
                   while(true) {
                     std::cout << "Choose either pile 1: A, 2: B, 3: C, or 4 to quit (pick the number that corresponds to suit)." << std::endl;
                     std::cin >> choice2; 
@@ -344,6 +346,7 @@ int main() {
                     break; 
                 case 2: 
                 	system ("clear");
+                	print(head_hand, actions, first_hand);
                 	std::cout << "Choose a sorting pile from 1-5" << std::endl;
                         int sort_choice;
                         std::cin >> sort_choice;
@@ -440,6 +443,7 @@ int main() {
                            break;
 		case 3: 
 			system ("clear");
+			print(head_hand, actions, first_hand);
 			std::cout << "Putting the card in the bottom of the deck." << std::endl;
 			push_deck(deck, tail_deck, head_hand->suit, head_hand->number); // suit and number comes from hand on all of these
 			pop_hand(head_hand, first_hand);//pop hand that was sent to deck
@@ -449,6 +453,7 @@ int main() {
                 
 		case 4: 
 			   system ("clear");
+			   print(head_hand, actions, first_hand);
 			   std::cout << "Which stack would you like to take from(1-5): " << std::endl;
 			   std::cin >> choice2;
 			   
