@@ -1,7 +1,8 @@
 #include <iostream>
 #include <iomanip>
 #include <fstream>
-
+#include <thread>
+#include <chrono>
 struct node {
   char suit;
   int number;
@@ -54,6 +55,25 @@ void push(node* &tail, node* &first, int &counter, int size, char input, int val
     }
 }
 
+void push_stack(node* &tail, node* &first, int &counter, char input, int value)
+{  
+    if(counter == 0) { //checks to see if the tail reaches hand size
+      tail->suit = input; 
+      tail->number = value;    
+      tail->next = new node;
+      //tail = tail->next; //sets tail back to the first spot in the hand
+      counter++;
+    }
+    else{
+      tail = tail->next;
+      tail->suit = input; 
+      tail->number = value;
+      tail->next = new node; 
+      //tail = tail->next;
+      counter++;
+    }
+}
+
 node pop_deck(node array[], int & head) {
   node temp = array[head];
   head++;
@@ -69,16 +89,15 @@ void pop_hand(node * &head, node * &first) {
   //}
 }
 
-void pop_stack(node* &tail,node* &head){
-	 if (isEmpty(head)) //check if empty list
+void pop_stack(node* &tail,node* &head,int sort_counter){
+     if (isEmpty(sort_counter)) //check if empty list
     {
-        cout << "Empty" << endl;
-        return 0;
-     
+        std::cout << "Empty" << std::endl;
+        return;
+
     }
-	else if(head == tail) //identical case to queue, if there is 1 node left
+    else if(head == tail) //identical case to queue, if there is 1 node left
     {
-        s = tail->word;
         delete head;
         head = tail = NULL;
     }
@@ -86,11 +105,12 @@ void pop_stack(node* &tail,node* &head){
     tail = head; //because temp is now at tail, we can change tail to equal head (back to beginning of list)
     while (tail->next != temp) //this will iterate through the linked list until just before the current temp
     { //which temp is now in previous tail's pos, or at last of list
-		tail = tail->next; // set tail equal to the node before the last of the list for future pop
-	}
-	tail->next = NULL; // unlink the very last node because temp is already that node
-	delete temp; // now delete temp since we had stored in the data char
+        tail = tail->next; // set tail equal to the node before the last of the list for future pop
+    }
+    tail->next = NULL; // unlink the very last node because temp is already that node
+    delete temp; // now delete temp since we had stored in the data char
 }
+
 
 //opens file and fills up the deck
 void parse(node array[], int &tail) { 
@@ -127,19 +147,39 @@ void print(node deck[], int counter, int size) {
 }
 
 //print for hands or anything using linked lists
-void print(node * head, int size, node * first) { 
+void print(node * head, int size, node * first) {
+	std::cout << "| "; 
   for(int i=0;i<size;i++) { 
-    std::cout << head->suit << " " << head->number;
-    std::cout << std::endl;
+    std::cout << head->suit << head->number << " | ";
     head = head->next;
   }
+  std::cout << std::endl;
 }
+
+void load(std::string a) //Loading animation
+{
+	std::string dot[] = {".", ". .", ". . ."};
+	for (int j = 0; j < 3; j++)
+	{
+		for (int i = 0; i < 3; i++)
+		{
+			std::cout << a << dot[i] << std::endl;
+			std::this_thread::sleep_for(std::chrono::milliseconds(300));
+			system("clear");
+		}
+	}
+}
+
 
 int main() {
   int choice;
-  int size_deck = 30; 
+  int choice2; 
+  int size_deck = 30; //max deck size 
+  int left = 30; //used for the game later to count how many cards are in the deck
   int size_hand = 5;
+  int actions = 5; //amount of cards left in hand basically
   int turn = 1; // number of turns 
+  int size_output = 10;
   
   //initializes decks
   node deck[size_deck]; //ring buffer array for deck 
@@ -154,210 +194,117 @@ int main() {
   int counter_hand = 0; 
   
   //3 sorting stack nodes initialize
-	node* head = new node;
+	//node* head = new node;
 	node* headA = NULL;
-	node* tailA = head;
-	
+	node* tailA = new node;
+    //    node* topA = new node;	
+
 	node* headB = NULL;
-	node* tailB = head;
-	
+	node* tailB = new node;
+    //    node* topB = new node;	
+
 	node* headC = NULL;
-	node* tailC = head;
+	node* tailC = new node;
+    //    node* topC = new node;        
+
+        //initialize these for later use
+        tailA->number = 0;
+        tailB->number = 0;
+        tailC->number = 0;
+
 	// 5 sorting stack nodes initialize
 	node* headO1 = NULL;
-	node* tailO1 = head;
+	node* tailO1 = new node;
+    //    node* topO1 = new node;
 	node* headO2 = NULL;
-	node* tailO2 = head;
+	node* tailO2 = new node;
+    //    node* topO2 = new node;
 	node* headO3 = NULL;
-	node* tailO3 = head;
+	node* tailO3 = new node;
+    //    node* topO3 = new node;
 	node* headO4 = NULL;
-	node* tailO4 = head;	
+	node* tailO4 = new node;
+    //    node* topO4 = new node;	
 	node* headO5 = NULL;
-	node* tailO5 = head;
+	node* tailO5 = new node;
+    //    node* topO5 = new node;
 	int counter_sort = 0;
 	int iA,iB,iC; //suit A,B,C counters for sort full
-	
-	std::cout << "Drawing..." << std::endl;
-	for (int i = 0; i < 5; i++) //first time starting - draw 5 cards into hand as queue
-	{
-		push(tail_hand, first_hand, counter_hand, size_hand, deck[head_deck].suit, deck[head_deck].number); 
-                pop_deck(deck, head_deck); //makes sure that the card is removed from the deck
-	}   
-  pop_hand(head_hand, first_hand);
-  print(head_hand, size_hand, first_hand); 
-  
-  //std::cout << head_hand->suit << " " << head_hand->number << std::endl;
-
-
 
   //sort algorithm - determines which stack user wants to put card in and will only allow user to put in card numbers
   //1 less than current value at top of respective sorting stacks
-  /*
-  int sort_choice;
-  std::cin >> sort_choice;
-  if(sort_choice == 1) // push hand into sorting stack 1
-  {
-	  if(tailO1->number == 0) // if nothing in stack, set number to 1 higher than input
-	  {
-		  tailO1->number = (tail_hand->number)+1;
-	  }
-	  if(tail_hand->number = (tailO1->number)+1) // must be lower value than card currently in stack
-	  {  
-	  push(tailO1,headO1,counter_sort,size_hand,tail_hand->suit,tail_hand->number);
-		}
-		else
-		{
-			std::cout << "Not a valid value to be placed" << std::endl;
-			// return back to sort menu?
-		}	  
+ 
+  load("Drawing");
+  for(int i=0; i<5; i++) {
+    push(tail_hand, first_hand, counter_hand, size_hand, deck[head_deck].suit, deck[head_deck].number);
+    pop_deck(deck, head_deck);
+    left--;
   }
-  else if(sort_choice == 2)
-  {
-	  if(tailO2->number == 0) // if nothing in stack, set number to 1 higher than input
-	  {
-		  tailO2->number = (tail_hand->number)+1;
-	  }
-	  if(tail_hand->number = (tailO2->number)+1) // must be lower value than card currently in stack
-	  {  
-	  push(tailO2,headO2,counter_sort,size_hand,tail_hand->suit,tail_hand->number);
-		}
-		else
-		{
-			std::cout << "Not a valid value to be placed" << std::endl;
-			// return back to sort menu?
-		}	  
-  }
-  else if(sort_choice == 3)
-  {
-	  if(tailO3->number == 0) // if nothing in stack, set number to 1 higher than input
-	  {
-		  tailO3->number = (tail_hand->number)+1;
-	  }
-	  if(tail_hand->number = (tailO3->number)+1) // must be lower value than card currently in stack
-	  {  
-	  push(tailO3,headO3,counter_sort,size_hand,tail_hand->suit,tail_hand->number);
-		}
-		else
-		{
-			std::cout << "Not a valid value to be placed" << std::endl;
-			// return back to sort menu?
-		}	  
-  }
-  else if(sort_choice == 4)
-  {
-	  if(tailO4->number == 0) // if nothing in stack, set number to 1 higher than input
-	  {
-		  tailO4->number = (tail_hand->number)+1;
-	  }
-	  if(tail_hand->number = (tailO4->number)+1) // must be lower value than card currently in stack
-	  {  
-	  push(tailO4,headO4,counter_sort,size_hand,tail_hand->suit,tail_hand->number);
-		}
-		else
-		{
-			std::cout << "Not a valid value to be placed" << std::endl;
-			// return back to sort menu?
-		}	  
-  }
-  else if(sort_choice == 5)
-  {
-	  if(tailO5->number == 0) // if nothing in stack, set number to 1 higher than input
-	  {
-		  tailO5->number = (tail_hand->number)+1;
-	  }
-	  if(tail_hand->number = (tailO5->number)+1) // must be lower value than card currently in stack
-	  {  
-	  push(tailO5,headO5,counter_sort,size_hand,tail_hand->suit,tail_hand->number);
-		}
-		else
-		{
-			std::cout << "Not a valid value to be placed" << std::endl;
-			// return back to sort menu?
-		}	  
-  }
-  */
-  
-  /*
-  std::cout << "Enter 1, 2, 3 to place onto the respective sorting stacks ";
-  std::cout << "or 4 to place first card in hand back into bottom of deck." << std::endl;
   bool game_end = false;
 	while(game_end == false)
-	{
-		std::cout << "TURN " << turn << std::endl;
-		if(choice == 1)
-		{  
-			if(iA == 10) // 10 values per suit
-			{
-				std::cout << "Stack A is full!" << std::endl;
-				//return; redo the push
-			}
-			else if(tail_hand->suit == 'B' || tail_hand->suit == 'C')
-			{
-				std::cout << "Wrong card type" << std::endl;
-				//return; redo the push
-			}
-			else if(tail_hand->number != (tailA->number)+1)
-			{
-				std::cout << "Not sorted correctly!" << std::endl;
-				//return; redo push
-			}
-			iA++;
-			push(tailA,headA,counter_sort,tail_hand->suit, tail_hand->number);
-			//pop
+	{ 
+		print(head_hand, actions, first_hand);
+		// initial cards if possible will go to output stack
+		if(tail_hand->suit == 'A' && tail_hand->number == 1){
+			push(tailA,headA,iA,size_output,tail_hand->suit,tail_hand->number);
 		}
-		else if (choice == 2)
-		{
-			if(iB == 10) // 10 values per suit
-			{
-				std::cout << "Stack B is full!" << std::endl;
-				//return; redo the push
-			}
-			else if(tail_hand->suit == 'A' || tail_hand->suit == 'C')
-			{
-				std::cout << "Wrong card type" << std::endl;
-				//return; redo the push
-			}
-			else if(tail_hand->number != (tailB->number)+1)
-			{
-				std::cout << "Not sorted correctly!" << std::endl;
-				//return; redo push
-			}
-			iB++;
-			push(tailB,headB,counter_sort,tail_hand->suit, tail_hand->number);
-			//pop
+		else if(tail_hand->suit == 'B' && tail_hand->number == 1){
+			push(tailB,headB,iB,size_output,tail_hand->suit,tail_hand->number);
 		}
-		else if (choice == 3)
-		{
-			if(iC == 10) //10 values per suit
-			{
-				std::cout << "Stack A is full!" << std::endl;
-				//return; redo the push
-			}
-			else if(tail_hand->suit == 'B' || tail_hand->suit == 'A')
-			{
-				std::cout << "Wrong card type" << std::endl;
-				//return; redo the push
-			}
-			else if(tail_hand->number != (tailC->number)+1)
-			{
-				std::cout << "Not sorted correctly!" << std::endl;
-				//return; redo push
-			}
-			iC++;
-			push(tailC,headC,counter_sort,tail_hand->suit,tail_hand->number);
-			//pop
+		else if(tail_hand->suit == 'C' && tail_hand->number == 1){
+			push(tailC,headC,iC,size_output,tail_hand->suit,tail_hand->number);
 		}
-		else if (choice == 4)
-		{
-			push_deck(deck, counter_deck, tail_hand->suit, tail_hand->number); // suit and number comes from hand on all of these
-			//pop hand that was sent to deck
-			//push from deck back into hand
+		// if there's already cards in output stack and hand fits (1 value more + same suit)
+		else if(tail_hand->suit == 'A' && tail_hand->number == (tailA->number)+1){
+			push(tailA,headA,iA,size_output,tail_hand->suit,tail_hand->number);
 		}
-		
-		turn++;
-		if(turn = 100)
+		else if(tail_hand->suit == 'B' && tail_hand->number == (tailB->number)+1){
+			push(tailB,headB,iB,size_output,tail_hand->suit,tail_hand->number);
+		}
+		else if(tail_hand->suit == 'C' && tail_hand->number == (tailC->number)+1){
+			push(tailC,headC,iC,size_output,tail_hand->suit,tail_hand->number);
+		}
+		else // sorting stack pushes
 		{
-		game_end = true; }//end game	
-	}*/
-  
+			if(tailO1->number == 0){ //if sort stack is empty
+				push(tailO1,headO1,counter_sort,size_output,tail_hand->suit,tail_hand->number);
+			}
+			else if(tail_hand->number = (tailO1->number)-1){ // otherwise make sure value is 1 less than what is currently on sort stack
+				push(tailO1,headO1,counter_sort,size_output,tail_hand->suit,tail_hand->number);
+			}
+			else if(tailO2->number == 0){
+				push(tailO2,headO2,counter_sort,size_output,tail_hand->suit,tail_hand->number);
+			}
+			else if(tail_hand->number = (tailO2->number)-1){
+				push(tailO2,headO2,counter_sort,size_output,tail_hand->suit,tail_hand->number);
+			}
+			else if(tailO3->number == 0){
+				push(tailO3,headO3,counter_sort,size_output,tail_hand->suit,tail_hand->number);
+			}
+			else if(tail_hand->number = (tailO3->number)-1){
+				push(tailO2,headO2,counter_sort,size_output,tail_hand->suit,tail_hand->number);
+			}
+			else if(tailO4->number == 0){
+				push(tailO4,headO4,counter_sort,size_output,tail_hand->suit,tail_hand->number);
+			}
+			else if(tail_hand->number = (tailO4->number)-1){
+				push(tailO4,headO4,counter_sort,size_output,tail_hand->suit,tail_hand->number);
+			}
+			else if(tailO5->number == 0){
+				push(tailO5,headO5,counter_sort,size_output,tail_hand->suit,tail_hand->number);
+			}
+			else if(tail_hand->number = (tailO5->number)-1){
+				push(tailO5,headO5,counter_sort,size_output,tail_hand->suit,tail_hand->number);
+			}
+		}
+		while(true) {
+			
+			
+		      if(left == 0) //if the deck is empty and the hand is empty
+              {
+				game_end = true;
+              }
+			}
+		}
 }
+
